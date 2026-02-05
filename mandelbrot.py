@@ -1,5 +1,6 @@
+print("Hello world")
 """
-Mandelbrot Set Generator
+Mandelbrot Set Generator 
 Author : Mikkel
 Course : Numerical Scientific Computing 2026
 """
