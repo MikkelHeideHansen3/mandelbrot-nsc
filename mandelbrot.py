@@ -1,10 +1,10 @@
 """
 Mandelbrot Set Generator
-Author : [ Your Name ]
+Author : Mikkel
 Course : Numerical Scientific Computing 2026
 """
 def f(x):
-"""
+    """
 Example function .
 Parameters
 ----------
