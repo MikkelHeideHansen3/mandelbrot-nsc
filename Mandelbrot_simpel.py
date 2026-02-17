@@ -1,4 +1,4 @@
-"""
+""" 
 Mandelbrot Set Generator
 Author: Mikkel Heide Hansen
 Course: Numerical Scientific Computing 2026
