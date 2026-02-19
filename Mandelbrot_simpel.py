@@ -26,15 +26,16 @@ def compute_mandelbrot(xmin, xmax, ymin, ymax, width, height, max_iter=100):
     """
     Compute Mandelbrot set over a 2D grid.
     """
-    result = np.zeros((height, width), dtype=int)
+    x = np.linspace(xmin, xmax, width)
+    y = np.linspace(ymin, ymax, height)
+    X, Y = np.meshgrid(x, y)
+    C = X + 1j * Y   # ← Milestone 1
 
-    x_vals = np.linspace(xmin, xmax, width)
-    y_vals = np.linspace(ymin, ymax, height)
+    result = np.zeros(C.shape, dtype=int)
 
-    for i, y in enumerate(y_vals):
-        for j, x in enumerate(x_vals):
-            c = x + 1j*y
-            result[i, j] = mandelbrot_point(c, max_iter)
+    for i in range(height):
+        for j in range(width):
+            result[i, j] = mandelbrot_point(C[i, j], max_iter)
 
     return result
 
@@ -71,17 +72,9 @@ if __name__ == "__main__":
         xmin, xmax, ymin, ymax,
         width, height,
         max_iter,
-        n_runs=5
+        n_runs=3
     )
 
-
-    # Timing
-    start = time.time()
-    mandelbrot = compute_mandelbrot(
-        xmin, xmax, ymin, ymax, width, height, max_iter
-    )
-    elapsed = time.time() - start
-    print(f"Computation took {elapsed:.3f} seconds")
 
     # Visualization
     plt.figure(figsize=(6, 6))
