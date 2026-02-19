@@ -58,13 +58,14 @@ def compute_mandelbrot_vectorized(xmin, xmax, ymin, ymax, width, height, max_ite
         
         mask = np.abs(Z) <= 2  # points not yet escaped
 
+        if not mask.any():
+            break
         # Update only active points
         Z[mask] = Z[mask]**2 + C[mask]
 
         # Count iterations
         M[mask] += 1
-        if not mask.any():
-            break
+
 
     return M
 
