@@ -22,7 +22,7 @@ def mandelbrot_point(c, max_iter):
     return max_iter
 
 
-def compute_mandelbrot(xmin, xmax, ymin, ymax, width, height, max_iter=100):
+def compute_mandelbrot_naive(xmin, xmax, ymin, ymax, width, height, max_iter=100):
     """
     Compute Mandelbrot set over a 2D grid.
     """
@@ -68,7 +68,7 @@ if __name__ == "__main__":
 
         # Benchmark computation
     t, mandelbrot = benchmark(
-        compute_mandelbrot,
+        compute_mandelbrot_naive,
         xmin, xmax, ymin, ymax,
         width, height,
         max_iter,
