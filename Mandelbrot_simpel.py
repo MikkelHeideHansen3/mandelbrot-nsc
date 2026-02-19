@@ -198,7 +198,7 @@ if __name__ == "__main__":
     t_col_f, _ = benchmark(column_sums, A_f, n_runs=3)
 
     print(f"\nRow/Column speed ratio (Fortran): {t_row_f / t_col_f:.2f}x slower")
-"""
+
 print("\n===== Problem Size Scaling =====")
 
 sizes = [256, 512, 1024, 2048, 4048]
@@ -225,3 +225,4 @@ plt.ylabel("Runtime (seconds)")
 plt.title("Mandelbrot Scaling (Vectorized)")
 plt.grid(True)
 plt.show()
+"""
