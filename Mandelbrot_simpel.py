@@ -28,7 +28,7 @@ def compute_mandelbrot_naive(xmin, xmax, ymin, ymax, width, height, max_iter=100
     x = np.linspace(xmin, xmax, width)
     y = np.linspace(ymin, ymax, height)
     X, Y = np.meshgrid(x, y)
-    C = X + 1j * Y   # ← Milestone 1
+    C = X + 1j * Y   
 
     result = np.zeros(C.shape, dtype=int)
 
@@ -172,7 +172,8 @@ if __name__ == "__main__":
     plt.tight_layout()
     plt.show()
 
-    print("\n===== Milestone 3: Memory Access Pattern =====")
+    #Side quest - 
+    print("\n===== Memory Access Pattern =====")
 
     N = 5000   # 10000 kan være tung på 8GB RAM – start med 5000
     A = np.random.rand(N, N)
