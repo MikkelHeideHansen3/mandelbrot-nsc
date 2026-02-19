@@ -6,6 +6,8 @@ Course: Numerical Scientific Computing 2026
 import numpy as np
 import matplotlib.pyplot as plt
 import time
+import statistics
+
 
 
 def mandelbrot_point(c, max_iter):
@@ -36,6 +38,25 @@ def compute_mandelbrot(xmin, xmax, ymin, ymax, width, height, max_iter=100):
 
     return result
 
+def benchmark(func, *args, n_runs=5):
+    """
+    Time func and return median runtime over n_runs.
+    """
+    times = []
+
+    for _ in range(n_runs):
+        t0 = time.perf_counter()
+        result = func(*args)
+        times.append(time.perf_counter() - t0)
+
+    median_t = statistics.median(times)
+
+    print(f"Median: {median_t:.4f}s "
+          f"(min={min(times):.4f}, max={max(times):.4f})")
+
+    return median_t, result
+
+
 
 if __name__ == "__main__":
     # Parameters (typical view)
@@ -43,6 +64,16 @@ if __name__ == "__main__":
     ymin, ymax = -1.5, 1.5
     width, height = 1024, 1024
     max_iter = 100
+
+        # Benchmark computation
+    t, mandelbrot = benchmark(
+        compute_mandelbrot,
+        xmin, xmax, ymin, ymax,
+        width, height,
+        max_iter,
+        n_runs=5
+    )
+
 
     # Timing
     start = time.time()
