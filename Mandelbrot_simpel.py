@@ -22,22 +22,34 @@ def mandelbrot_point(c, max_iter):
     return max_iter
 
 
-def compute_mandelbrot_naive(xmin, xmax, ymin, ymax, width, height, max_iter=100):
+def compute_mandelbrot_vectorized(xmin, xmax, ymin, ymax, width, height, max_iter=100):
     """
     Compute Mandelbrot set over a 2D grid.
     """
+    # Create complex grid 
     x = np.linspace(xmin, xmax, width)
     y = np.linspace(ymin, ymax, height)
     X, Y = np.meshgrid(x, y)
-    C = X + 1j * Y   # ← Milestone 1
+    C = X + 1j * Y
 
-    result = np.zeros(C.shape, dtype=int)
+    # Initialize arrays
+    Z = np.zeros_like(C, dtype=np.complex128)
+    M = np.zeros(C.shape, dtype=int)
 
-    for i in range(height):
-        for j in range(width):
-            result[i, j] = mandelbrot_point(C[i, j], max_iter)
+    # Keep only iteration loop
+    for n in range(max_iter):
+        
+        mask = np.abs(Z) <= 2  # points not yet escaped
 
-    return result
+        # Update only active points
+        Z[mask] = Z[mask]**2 + C[mask]
+
+        # Count iterations
+        M[mask] += 1
+        if not mask.any():
+            break
+
+    return M
 
 def benchmark(func, *args, n_runs=5):
     """
@@ -68,7 +80,7 @@ if __name__ == "__main__":
 
         # Benchmark computation
     t, mandelbrot = benchmark(
-        compute_mandelbrot_naive,
+        compute_mandelbrot_vectorized,
         xmin, xmax, ymin, ymax,
         width, height,
         max_iter,
@@ -81,7 +93,7 @@ if __name__ == "__main__":
     plt.imshow(mandelbrot, extent=[xmin, xmax, ymin, ymax],
                origin="lower", cmap="hot")
     plt.colorbar(label="Iterations")
-    plt.title("Mandelbrot Set (Naive Python)")
+    plt.title("Mandelbrot Set (Vectorized NumPy)")
     plt.xlabel("Re")
     plt.ylabel("Im")
     plt.tight_layout()
