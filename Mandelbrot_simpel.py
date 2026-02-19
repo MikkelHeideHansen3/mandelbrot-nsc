@@ -97,7 +97,8 @@ if __name__ == "__main__":
 
 
         # Benchmark computation naive
-    t, mandelbrot = benchmark(
+    print("Naive version:")
+    t_naive, result_naive = benchmark(
         compute_mandelbrot_naive,
         xmin, xmax, ymin, ymax,
         width, height,
@@ -105,7 +106,8 @@ if __name__ == "__main__":
         n_runs=3
     )
         # Benchmark computation vectorized
-    t, mandelbrot = benchmark(
+    print("\nVectorized version:")
+    t_vec, result_vec = benchmark(
         compute_mandelbrot_vectorized,
         xmin, xmax, ymin, ymax,
         width, height,
@@ -113,9 +115,27 @@ if __name__ == "__main__":
         n_runs=3
     )
 
+
+    # =========================
+    # Validate results
+    # =========================
+    print("\nValidating results...")
+
+    if np.allclose(result_naive, result_vec):
+        print("Results match!")
+    else:
+        print("Results differ!")
+
+    diff = np.abs(result_naive - result_vec)
+    print(f"Max difference: {diff.max()}")
+    print(f"Different pixels: {(diff > 0).sum()}")
+
+    print(f"\nSpeedup: {t_naive / t_vec:.2f}x faster")
+
+
     # Visualization
     plt.figure(figsize=(6, 6))
-    plt.imshow(mandelbrot, extent=[xmin, xmax, ymin, ymax],
+    plt.imshow(result_vec, extent=[xmin, xmax, ymin, ymax],
                origin="lower", cmap="hot")
     plt.colorbar(label="Iterations")
     plt.title("Mandelbrot Set (Vectorized NumPy)")
