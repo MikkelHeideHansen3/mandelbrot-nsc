@@ -171,7 +171,7 @@ if __name__ == "__main__":
     plt.ylabel("Im")
     plt.tight_layout()
     plt.show()
-
+"""
     #Side quest - 
     print("\n===== Memory Access Pattern =====")
 
@@ -198,3 +198,30 @@ if __name__ == "__main__":
     t_col_f, _ = benchmark(column_sums, A_f, n_runs=3)
 
     print(f"\nRow/Column speed ratio (Fortran): {t_row_f / t_col_f:.2f}x slower")
+"""
+print("\n===== Problem Size Scaling =====")
+
+sizes = [256, 512, 1024, 2048, 4048]
+runtimes = []
+
+for N in sizes:
+    print(f"\nRunning size {N} x {N}")
+
+    t, _ = benchmark(
+        compute_mandelbrot_vectorized,
+        xmin, xmax, ymin, ymax,
+        N, N,
+        max_iter,
+        n_runs=3
+    )
+
+    runtimes.append(t)
+
+# Plot scaling
+plt.figure()
+plt.plot(sizes, runtimes, marker='o')
+plt.xlabel("Grid size (N x N)")
+plt.ylabel("Runtime (seconds)")
+plt.title("Mandelbrot Scaling (Vectorized)")
+plt.grid(True)
+plt.show()
