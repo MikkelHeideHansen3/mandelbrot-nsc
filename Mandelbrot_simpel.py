@@ -21,6 +21,23 @@ def mandelbrot_point(c, max_iter):
             return n
     return max_iter
 
+def compute_mandelbrot_naive(xmin, xmax, ymin, ymax, width, height, max_iter=100):
+    """
+    Compute Mandelbrot set over a 2D grid.
+    """
+    x = np.linspace(xmin, xmax, width)
+    y = np.linspace(ymin, ymax, height)
+    X, Y = np.meshgrid(x, y)
+    C = X + 1j * Y   # ← Milestone 1
+
+    result = np.zeros(C.shape, dtype=int)
+
+    for i in range(height):
+        for j in range(width):
+            result[i, j] = mandelbrot_point(C[i, j], max_iter)
+
+    return result
+
 
 def compute_mandelbrot_vectorized(xmin, xmax, ymin, ymax, width, height, max_iter=100):
     """
@@ -78,7 +95,16 @@ if __name__ == "__main__":
     width, height = 1024, 1024
     max_iter = 100
 
-        # Benchmark computation
+
+        # Benchmark computation naive
+    t, mandelbrot = benchmark(
+        compute_mandelbrot_naive,
+        xmin, xmax, ymin, ymax,
+        width, height,
+        max_iter,
+        n_runs=3
+    )
+        # Benchmark computation vectorized
     t, mandelbrot = benchmark(
         compute_mandelbrot_vectorized,
         xmin, xmax, ymin, ymax,
@@ -86,7 +112,6 @@ if __name__ == "__main__":
         max_iter,
         n_runs=3
     )
-
 
     # Visualization
     plt.figure(figsize=(6, 6))
