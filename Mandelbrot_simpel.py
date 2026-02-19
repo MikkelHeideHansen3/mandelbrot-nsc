@@ -16,9 +16,9 @@ def mandelbrot_point(c, max_iter):
     """
     z = 0.0 + 0.0j
     for n in range(max_iter):
-        z = z*z + c
-        if abs(z) > 2:
+        if abs(z) >= 2:
             return n
+        z = z*z + c
     return max_iter
 
 def compute_mandelbrot_naive(xmin, xmax, ymin, ymax, width, height, max_iter=100):
@@ -67,6 +67,22 @@ def compute_mandelbrot_vectorized(xmin, xmax, ymin, ymax, width, height, max_ite
             break
 
     return M
+
+def row_sums(A):
+    N = A.shape[0]
+    s = 0.0
+    for i in range(N):
+        s += np.sum(A[i, :])
+    return s
+
+
+def column_sums(A):
+    N = A.shape[1]
+    s = 0.0
+    for j in range(N):
+        s += np.sum(A[:, j])
+    return s
+
 
 def benchmark(func, *args, n_runs=5):
     """
@@ -133,7 +149,18 @@ if __name__ == "__main__":
     print(f"\nSpeedup: {t_naive / t_vec:.2f}x faster")
 
 
-    # Visualization
+    # Visualization naive
+    plt.figure(figsize=(6, 6))
+    plt.imshow(result_naive, extent=[xmin, xmax, ymin, ymax],
+               origin="lower", cmap="hot")
+    plt.colorbar(label="Iterations")
+    plt.title("Mandelbrot Set (Vectorized NumPy)")
+    plt.xlabel("Re")
+    plt.ylabel("Im")
+    plt.tight_layout()
+    plt.show()
+
+    # Visualization vector
     plt.figure(figsize=(6, 6))
     plt.imshow(result_vec, extent=[xmin, xmax, ymin, ymax],
                origin="lower", cmap="hot")
@@ -143,3 +170,29 @@ if __name__ == "__main__":
     plt.ylabel("Im")
     plt.tight_layout()
     plt.show()
+
+    print("\n===== Milestone 3: Memory Access Pattern =====")
+
+    N = 5000   # 10000 kan være tung på 8GB RAM – start med 5000
+    A = np.random.rand(N, N)
+
+    print("\nC-order array (row-major, default NumPy):")
+
+    print("Row sums:")
+    t_row, _ = benchmark(row_sums, A, n_runs=3)
+
+    print("Column sums:")
+    t_col, _ = benchmark(column_sums, A, n_runs=3)
+
+    print(f"\nRow/Column speed ratio: {t_col / t_row:.2f}x slower")
+
+    print("\nNow testing Fortran-order (column-major):")
+    A_f = np.asfortranarray(A)
+
+    print("Row sums (Fortran-order):")
+    t_row_f, _ = benchmark(row_sums, A_f, n_runs=3)
+
+    print("Column sums (Fortran-order):")
+    t_col_f, _ = benchmark(column_sums, A_f, n_runs=3)
+
+    print(f"\nRow/Column speed ratio (Fortran): {t_row_f / t_col_f:.2f}x slower")
