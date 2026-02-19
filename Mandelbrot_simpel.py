@@ -202,7 +202,7 @@ if __name__ == "__main__":
 
 print("\n===== Problem Size Scaling =====")
 
-sizes = [256, 512, 1024, 2048, 4048]
+sizes = [256, 512, 1024, 2048, 4096]
 runtimes = []
 
 for N in sizes:
