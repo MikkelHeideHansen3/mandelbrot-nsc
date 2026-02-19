@@ -69,6 +69,7 @@ def compute_mandelbrot_vectorized(xmin, xmax, ymin, ymax, width, height, max_ite
 
     return M
 
+#Memory Access Pattern function
 def row_sums(A):
     N = A.shape[0]
     s = 0.0
@@ -76,7 +77,7 @@ def row_sums(A):
         s += np.sum(A[i, :])
     return s
 
-
+#Memory Access Pattern function
 def column_sums(A):
     N = A.shape[1]
     s = 0.0
