@@ -156,7 +156,7 @@ if __name__ == "__main__":
     plt.imshow(result_naive, extent=[xmin, xmax, ymin, ymax],
                origin="lower", cmap="hot")
     plt.colorbar(label="Iterations")
-    plt.title("Mandelbrot Set (Vectorized NumPy)")
+    plt.title("Mandelbrot Set (Naive)")
     plt.xlabel("Re")
     plt.ylabel("Im")
     plt.tight_layout()
