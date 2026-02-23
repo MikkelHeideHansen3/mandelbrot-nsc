@@ -1,5 +1,5 @@
 """ 
-Mandelbrot Set Generator
+Mandelbrot Set Generator 
 Author: Mikkel Heide Hansen
 Course: Numerical Scientific Computing (NSC) 2026
 """
