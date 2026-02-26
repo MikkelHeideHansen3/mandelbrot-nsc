@@ -9,6 +9,12 @@ import matplotlib.pyplot as plt
 import time
 import statistics
 
+try:
+    from line_profiler import profile
+except ImportError:
+    def profile(func):
+        return func
+
 def mandelbrot_point(c, max_iter):
     z = 0.0 + 0.0j
     for n in range(max_iter):
