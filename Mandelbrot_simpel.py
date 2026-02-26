@@ -9,7 +9,6 @@ import matplotlib.pyplot as plt
 import time
 import statistics
 
-
 def mandelbrot_point(c, max_iter):
     z = 0.0 + 0.0j
     for n in range(max_iter):
@@ -195,6 +194,3 @@ if len(sizes) == len(runtimes):
     plt.show()
 else:
     print("ERROR: sizes and runtimes length mismatch")
-
-
-
