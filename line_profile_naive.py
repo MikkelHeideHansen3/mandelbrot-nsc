@@ -1,5 +1,5 @@
 import numpy as np
-
+from line_profiler import profile
 
 @profile
 def compute_mandelbrot_naive(xmin, xmax, ymin, ymax, width, height, max_iter=100):

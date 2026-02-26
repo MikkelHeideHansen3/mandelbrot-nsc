@@ -10,12 +10,6 @@ import time
 import statistics
 from numba import njit
 
-try:
-    from line_profiler import profile
-except ImportError:
-    def profile(func):
-        return func
-
 def mandelbrot_point(c, max_iter):
     z = 0.0 + 0.0j
     for n in range(max_iter):
@@ -60,19 +54,28 @@ def compute_mandelbrot_vectorized(xmin, xmax, ymin, ymax, width, height, max_ite
     return M
 
 
-def benchmark(func, *args, n_runs=2):
+def benchmark(func, *args, n_runs=5):
+    """
+    Benchmarks a function using:
+    - 1 warm-up run (not timed)
+    - n_runs timed executions
+    - Returns mean and standard deviation
+    """
+
+    # Warm-up (important for Numba JIT)
+    func(*args)
+
     times = []
 
     for _ in range(n_runs):
         t0 = time.perf_counter()
-        result = func(*args)
+        func(*args)
         times.append(time.perf_counter() - t0)
-
-    mean = statistics.mean(times)
+    
+    median = statistics.median(times)
     std = statistics.stdev(times)
 
-    print(f"Mean: {mean:.4f}s ± {std:.4f}s")
-    return mean, std, result
+    return median, std
 
 @njit
 def compute_mandelbrot_numba(xmin, xmax, ymin, ymax, width, height, max_iter=100):
@@ -178,23 +181,84 @@ if __name__ == "__main__":
     width, height = 1024, 1024
     max_iter = 100
 
+    # =============================
+    # NAIVE
+    # =============================
     print("Naive version:")
-    t_naive, std_naive, result_naive = benchmark(
+
+    # Generate result for plotting
+    result_naive = compute_mandelbrot_naive(
+        xmin, xmax, ymin, ymax,
+        width, height,
+        max_iter
+    )
+
+    # Benchmark separately
+    mu_naive, sigma_naive = benchmark(
         compute_mandelbrot_naive,
         xmin, xmax, ymin, ymax,
         width, height,
         max_iter
     )
 
+    print(f"Naive: {mu_naive:.4f} ± {sigma_naive:.4f} s")
+
+
+    # =============================
+    # NUMPY VECTORIZED
+    # =============================
     print("\nVectorized version:")
-    t_vec, std_vec, result_vec = benchmark(
+
+    result_vec = compute_mandelbrot_vectorized(
+        xmin, xmax, ymin, ymax,
+        width, height,
+        max_iter
+    )
+
+    mu_vec, sigma_vec = benchmark(
         compute_mandelbrot_vectorized,
         xmin, xmax, ymin, ymax,
         width, height,
         max_iter
     )
 
-    print(f"\nSpeedup: {t_naive / t_vec:.2f}x faster")
+    print(f"NumPy: {mu_vec:.4f} ± {sigma_vec:.4f} s")
+    print(f"Speedup vs naive: {mu_naive / mu_vec:.2f}x")
+
+
+    # =============================
+    # NUMBA
+    # =============================
+    print("\nNumba version:")
+
+    # Warm-up (compilation)
+    compute_mandelbrot_numba(
+        xmin, xmax, ymin, ymax,
+        width, height,
+        max_iter
+    )
+
+    result_numba = compute_mandelbrot_numba(
+        xmin, xmax, ymin, ymax,
+        width, height,
+        max_iter
+    )
+
+    mu_numba, sigma_numba = benchmark(
+        compute_mandelbrot_numba,
+        xmin, xmax, ymin, ymax,
+        width, height,
+        max_iter
+    )
+
+    print(f"Numba: {mu_numba:.4f} ± {sigma_numba:.4f} s")
+    print(f"Speedup vs naive: {mu_naive / mu_numba:.2f}x")
+    print(f"Speedup vs NumPy: {mu_vec / mu_numba:.2f}x")
+
+
+    # =============================
+    # PLOTTING
+    # =============================
 
     # Plot naive
     plt.figure(figsize=(6, 6))
@@ -204,7 +268,7 @@ if __name__ == "__main__":
     plt.colorbar()
     plt.show()
 
-    # Plot vectorized
+    # Plot NumPy
     plt.figure(figsize=(6, 6))
     plt.imshow(result_vec, extent=[xmin, xmax, ymin, ymax],
                origin="lower", cmap="hot")
@@ -212,65 +276,65 @@ if __name__ == "__main__":
     plt.colorbar()
     plt.show()
 
-    print("\nNumba version:")
+    # Plot Numba
+    plt.figure(figsize=(6, 6))
+    plt.imshow(result_numba, extent=[xmin, xmax, ymin, ymax],
+               origin="lower", cmap="hot")
+    plt.title("Mandelbrot (Numba)")
+    plt.colorbar()
+    plt.show()
 
-    # Warmup (kompilerer)
-    compute_mandelbrot_numba(
+
+    # =============================
+    # PRECISION COMPARISON
+    # =============================
+    print("\nGenerating precision comparison plots...")
+
+    r32 = mandelbrot_numba_f32(
         xmin, xmax, ymin, ymax,
-        width, height,
-        max_iter
+        width, height, max_iter
     )
 
-    t_numba, std_numba, result_numba = benchmark(
-        compute_mandelbrot_numba,
+    r64 = mandelbrot_numba_f64(
         xmin, xmax, ymin, ymax,
-        width, height,
-        max_iter
+        width, height, max_iter
     )
 
-    print(f"\nSpeedup vs naive: {t_naive / t_numba:.2f}x faster")
-    print(f"Speedup vs NumPy: {t_vec / t_numba:.2f}x faster")
+    fig, axes = plt.subplots(1, 2, figsize=(12, 5))
 
-print("\nTesting float32...")
-mandelbrot_numba_f32(xmin, xmax, ymin, ymax, width, height, max_iter)  # warmup
-t0 = time.perf_counter()
-mandelbrot_numba_f32(xmin, xmax, ymin, ymax, width, height, max_iter)
-t_f32 = time.perf_counter() - t0
-print(f"float32: {t_f32:.4f}s")
+    axes[0].imshow(r32, cmap="hot", origin="lower",
+                   extent=[xmin, xmax, ymin, ymax])
+    axes[0].set_title("float32")
+    axes[0].axis("off")
 
-print("\nTesting float64...")
-mandelbrot_numba_f64(xmin, xmax, ymin, ymax, width, height, max_iter)  # warmup
-t0 = time.perf_counter()
-mandelbrot_numba_f64(xmin, xmax, ymin, ymax, width, height, max_iter)
-t_f64 = time.perf_counter() - t0
-print(f"float64: {t_f64:.4f}s")
+    axes[1].imshow(r64, cmap="hot", origin="lower",
+                   extent=[xmin, xmax, ymin, ymax])
+    axes[1].set_title("float64")
+    axes[1].axis("off")
+
+    plt.tight_layout()
+    plt.savefig("precision_comparison.png", dpi=150)
+    plt.show()
 
 
-print("\nGenerating precision comparison plots...")
+    # =============================
+    # PRECISION BENCHMARK (μ ± σ)
+    # =============================
+    print("\n=== Precision Benchmark ===")
 
-r32 = mandelbrot_numba_f32(
-    xmin, xmax, ymin, ymax,
-    width, height, max_iter
-)
+    mu32, sigma32 = benchmark(
+        mandelbrot_numba_f32,
+        xmin, xmax, ymin, ymax,
+        width, height, max_iter
+    )
 
-r64 = mandelbrot_numba_f64(
-    xmin, xmax, ymin, ymax,
-    width, height, max_iter
-)
+    mu64, sigma64 = benchmark(
+        mandelbrot_numba_f64,
+        xmin, xmax, ymin, ymax,
+        width, height, max_iter
+    )
 
-fig, axes = plt.subplots(1, 2, figsize=(12, 5))
-
-axes[0].imshow(r32, cmap="hot", origin="lower",
-               extent=[xmin, xmax, ymin, ymax])
-axes[0].set_title("float32")
-axes[0].axis("off")
-
-axes[1].imshow(r64, cmap="hot", origin="lower",
-               extent=[xmin, xmax, ymin, ymax])
-axes[1].set_title("float64")
-axes[1].axis("off")
-
-plt.tight_layout()
-plt.savefig("precision_comparison.png", dpi=150)
-plt.show()
-
+    print("Precision    Time (μ ± σ) [s]")
+    print("--------------------------------")
+    print(f"float32      {mu32:.4f} ± {sigma32:.4f}")
+    print(f"float64      {mu64:.4f} ± {sigma64:.4f}")
