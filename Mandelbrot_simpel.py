@@ -178,19 +178,19 @@ if __name__ == "__main__":
             n_runs=3
         )
 
-    runtimes.append(t)
+        runtimes.append(t)
 
-print("Sizes:", sizes)
-print("Runtimes:", runtimes)
+    print("Sizes:", sizes)
+    print("Runtimes:", runtimes)
 
-# Plot AFTER loop
-if len(sizes) == len(runtimes):
-    plt.figure()
-    plt.plot(sizes, runtimes, marker='o')
-    plt.xlabel("Grid size (N x N)")
-    plt.ylabel("Runtime (seconds)")
-    plt.title("Mandelbrot Scaling (Vectorized)")
-    plt.grid(True)
-    plt.show()
-else:
-    print("ERROR: sizes and runtimes length mismatch")
+    # Plot AFTER loop
+    if len(sizes) == len(runtimes):
+        plt.figure()
+        plt.plot(sizes, runtimes, marker='o')
+        plt.xlabel("Grid size (N x N)")
+        plt.ylabel("Runtime (seconds)")
+        plt.title("Mandelbrot Scaling (Vectorized)")
+        plt.grid(True)
+        plt.show()
+    else:
+        print("ERROR: sizes and runtimes length mismatch")

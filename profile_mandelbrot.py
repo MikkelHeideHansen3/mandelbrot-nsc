@@ -1,7 +1,13 @@
-from Mandelbrot_simpel import compute_mandelbrot_naive
+from Mandelbrot_simpel import (
+    compute_mandelbrot_naive,
+    compute_mandelbrot_vectorized
+)
+
 import cProfile
 import pstats
-def run_profiles():
+
+
+def profile_function(func, name):
     xmin, xmax = -2.0, 1.0
     ymin, ymax = -1.5, 1.5
     width, height = 512, 512
@@ -9,16 +15,17 @@ def run_profiles():
 
     profiler = cProfile.Profile()
     profiler.enable()
-    compute_mandelbrot_naive(
-        xmin, xmax, ymin, ymax,
-        width, height, max_iter
-    )
+
+    func(xmin, xmax, ymin, ymax, width, height, max_iter)
+
     profiler.disable()
 
-    print("\n===== NAIVE PROFILE =====")
+    print(f"\n===== PROFILE: {name} =====")
     stats = pstats.Stats(profiler)
     stats.sort_stats("cumulative")
     stats.print_stats(15)
 
+
 if __name__ == "__main__":
-    run_profiles()
+    profile_function(compute_mandelbrot_naive, "NAIVE")
+    profile_function(compute_mandelbrot_vectorized, "NUMPY")
