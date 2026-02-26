@@ -55,14 +55,8 @@ def compute_mandelbrot_vectorized(xmin, xmax, ymin, ymax, width, height, max_ite
 
 
 def benchmark(func, *args, n_runs=5):
-    """
-    Benchmarks a function using:
-    - 1 warm-up run (not timed)
-    - n_runs timed executions
-    - Returns mean and standard deviation
-    """
 
-    # Warm-up (important for Numba JIT)
+    #Warm-up 
     func(*args)
 
     times = []
@@ -193,7 +187,7 @@ if __name__ == "__main__":
         max_iter
     )
 
-    # Benchmark separately
+    
     mu_naive, sigma_naive = benchmark(
         compute_mandelbrot_naive,
         xmin, xmax, ymin, ymax,
@@ -231,7 +225,7 @@ if __name__ == "__main__":
     # =============================
     print("\nNumba version:")
 
-    # Warm-up (compilation)
+    # Warm-up
     compute_mandelbrot_numba(
         xmin, xmax, ymin, ymax,
         width, height,
@@ -318,7 +312,7 @@ if __name__ == "__main__":
 
 
     # =============================
-    # PRECISION BENCHMARK (μ ± σ)
+    # PRECISION BENCHMARK 
     # =============================
     print("\n=== Precision Benchmark ===")
 

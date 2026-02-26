@@ -1,0 +1,184 @@
+2026-02-27 79c16da Finishing touches for MP1
+
+ Hardware specs.py                             |   6 +-
+ Mandelbrot_Naive_vs_Numpy.py                  | 190 +++++++++++++++++---------
+ Mandelbrot_simpel.py.lprof                    | Bin 242 -> 92 bytes
+ __pycache__/Mandelbrot_simpel.cpython-311.pyc | Bin 8379 -> 8646 bytes
+ benchmark_all.py                              | 131 ++++++++++++++++++
+ line_profile_naive.py                         |   2 +-
+ line_profile_naive.py.lprof                   | Bin 332 -> 327 bytes
+ line_profile_numpy.py                         |  26 ++++
+ line_profile_numpy.py.lprof                   | Bin 0 -> 282 bytes
+ naive_profile.prof                            | Bin 277 -> 5027 bytes
+ numpy_profile.prof                            | Bin 0 -> 5670 bytes
+ precision_comparison.png                      | Bin 0 -> 211826 bytes
+ profile_mandelbrot_2.py                       |  25 ++++
+ 13 files changed, 315 insertions(+), 65 deletions(-)
+2026-02-26 0a2c9d2 Deleted plots of float32 and float 64
+
+ precision_comparison.png | Bin 211826 -> 0 bytes
+ precision_difference.png | Bin 35352 -> 0 bytes
+ 2 files changed, 0 insertions(+), 0 deletions(-)
+2026-02-26 7127955 Milestone 4 - Almost ready to hand in
+
+ Hardware specs.py            |  10 ++++
+ Mandelbrot_Naive_vs_Numpy.py | 128 ++++++++++++++++++++++++++++++++++++++++---
+ precision_comparison.png     | Bin 0 -> 211826 bytes
+ precision_difference.png     | Bin 0 -> 35352 bytes
+ 4 files changed, 131 insertions(+), 7 deletions(-)
+2026-02-26 985fa28 Milestone 3 - Added script for testing numba vs. naive + numpy
+
+ Mandelbrot_Naive_vs_Numpy.py | 162 +++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 162 insertions(+)
+2026-02-26 9ee5e3e Added script for profiling, completing milestone 2
+
+ Mandelbrot_simpel.py        |   6 ++++++
+ Mandelbrot_simpel.py.lprof  | Bin 0 -> 242 bytes
+ line_profile_naive.py       |  26 ++++++++++++++++++++++++++
+ line_profile_naive.py.lprof | Bin 0 -> 332 bytes
+ 4 files changed, 32 insertions(+)
+2026-02-26 e4eabe2 Finished Milestone 1
+
+ Mandelbrot_simpel.py                          |  32 +++++++++++++-------------
+ __pycache__/Mandelbrot_simpel.cpython-311.pyc | Bin 5073 -> 8379 bytes
+ profile_mandelbrot.py                         |  23 +++++++++++-------
+ 3 files changed, 31 insertions(+), 24 deletions(-)
+2026-02-26 c491299 Change name of second script
+
+ from Mandelbrot_simpel import compute_ma.py => profile_mandelbrot.py | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+2026-02-26 1ae593f New script for Milestone 1 - Lesson 3
+
+ Mandelbrot_simpel.py                          |   4 ----
+ __pycache__/Mandelbrot_simpel.cpython-311.pyc | Bin 0 -> 5073 bytes
+ from Mandelbrot_simpel import compute_ma.py   |  24 ++++++++++++++++++++++++
+ 3 files changed, 24 insertions(+), 4 deletions(-)
+2026-02-26 d4bd4d9 Almost had a minor breakdown cause everything didn't work, but works now
+
+ Mandelbrot_simpel.py | 167 +++++++++++++++++++++------------------------------
+ naive_profile.prof   | Bin 0 -> 277 bytes
+ 2 files changed, 69 insertions(+), 98 deletions(-)
+2026-02-23 ae75eed Added "space" for test
+
+ Mandelbrot_simpel.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+2026-02-23 e30e6a2 Added "(NSC)" to test add, commit and push in Visual Studio Code
+
+ Mandelbrot_simpel.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+2026-02-23 4653cad Changed first plot title to "Naive"
+
+ Mandelbrot_simpel.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+2026-02-19 6e39b48 Changed from 4048 to 4096 in Problem Size Scaling
+
+ Mandelbrot_simpel.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+2026-02-19 6bd475f Added comments for functions
+
+ Mandelbrot_simpel.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+2026-02-19 1310627 Validation + Milestone 3 + Milestone 4 commented out
+
+ Mandelbrot_simpel.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+2026-02-19 41a1f4b Added Problem Size Scaling with plot
+
+ Mandelbrot_simpel.py | 29 ++++++++++++++++++++++++++++-
+ 1 file changed, 28 insertions(+), 1 deletion(-)
+2026-02-19 04ea8c0 Deleted comments with "milestone"
+
+ Mandelbrot_simpel.py | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+2026-02-19 f5157fb Move "if not mask.any():" up
+
+ Mandelbrot_simpel.py | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+2026-02-19 d11143c Added plot of vectorized + fixed "results differ" til "results match" + Milestone 3
+
+ Mandelbrot_simpel.py | 59 +++++++++++++++++++++++++++++++++++++++++++++++++---
+ 1 file changed, 56 insertions(+), 3 deletions(-)
+2026-02-19 ef797b8 Clean up + added validation between naive and vectorized
+
+ Mandelbrot_simpel.py | 26 +++++++++++++++++++++++---
+ 1 file changed, 23 insertions(+), 3 deletions(-)
+2026-02-19 f4d7434 Updated: Both naive and vectorized
+
+ Mandelbrot_simpel.py | 29 +++++++++++++++++++++++++++--
+ 1 file changed, 27 insertions(+), 2 deletions(-)
+2026-02-19 f5eb10a Milestone 2 - First vectorized script
+
+ Mandelbrot_simpel.py | 30 +++++++++++++++++++++---------
+ 1 file changed, 21 insertions(+), 9 deletions(-)
+2026-02-19 568ad7e Rename to naive mandelbrot
+
+ Mandelbrot_simpel.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+2026-02-19 0923a5f Milestone 1 + Only timing the process once instead of twice
+
+ Mandelbrot_simpel.py | 25 +++++++++----------------
+ 1 file changed, 9 insertions(+), 16 deletions(-)
+2026-02-19 fb5ad14 Added benchmark
+
+ Mandelbrot_simpel.py | 31 +++++++++++++++++++++++++++++++
+ 1 file changed, 31 insertions(+)
+2026-02-19 94a8541 Slettede "hej"
+
+ Mandelbrot_simpel.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+2026-02-19 9c16fe0 Update Mandelbrot_simpel.py
+
+ Mandelbrot_simpel.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+2026-02-19 0a0b953 Update Mandelbrot_simpel.py
+
+ Mandelbrot_simpel.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+2026-02-17 9644ff7 Testing if I understand this
+
+ Mandelbrot_simpel.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+2026-02-17 465ac42 Add header docstring to Mandelbrot script
+
+ Mandelbrot_simpel.py | 5 +++++
+ 1 file changed, 5 insertions(+)
+2026-02-05 9e1ec28 Rename environment.yml to Environment.yml
+
+ environment.yml => Environment.yml | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+2026-02-05 cf393d9 Files to ignore
+
+ .gitignore | 6 ++++++
+ 1 file changed, 6 insertions(+)
+2026-02-05 1f0a54d Rename mandelbrot.py to Test_af_upload
+
+ mandelbrot.py => Test_af_upload.py | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+2026-02-05 fa2d09d Implement simple Mandelbrot version
+
+ Mandelbrot_simpel.py | 59 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 59 insertions(+)
+2026-02-05 f4ae550 Lavede en ny ændring
+
+ mandelbrot.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+2026-02-05 e41f1e9 Added name
+
+ mandelbrot.py | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+2026-02-05 a476af1 Remove bla1.py
+
+ bla1.py | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+2026-02-05 0406f24 Please virk
+
+ mandelbrot.py | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
+2026-02-05 f815760 Bruh
+
+ bla1.py | 0
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+2026-02-05 9489fec Add Python environment specification
+
+ environment.yml | 343 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 343 insertions(+)
