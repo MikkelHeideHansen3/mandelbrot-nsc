@@ -4,3 +4,6 @@
 # Spyder
 .spyproject/
 
+# Python cache
+__pycache__/
+*.pyc
