@@ -307,7 +307,6 @@ if __name__ == "__main__":
     axes[1].axis("off")
 
     plt.tight_layout()
-    plt.savefig("precision_comparison.png", dpi=150)
     plt.show()
 
 

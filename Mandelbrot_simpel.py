@@ -186,8 +186,6 @@ if __name__ == "__main__":
 
         runtimes.append(t)
 
-    print("Sizes:", sizes)
-    print("Runtimes:", runtimes)
 
     # Plot AFTER loop
     if len(sizes) == len(runtimes):
