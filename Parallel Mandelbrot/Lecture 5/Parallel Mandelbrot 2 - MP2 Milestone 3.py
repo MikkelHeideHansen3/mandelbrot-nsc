@@ -163,6 +163,9 @@ if __name__ == "__main__":
     # WORKER SWEEP
     # =========================
 
+    workers_list = []
+    speedups = []   
+
     for n_workers in range(1, os.cpu_count() + 1):
 
         chunk_size = max(1, N // n_workers)
@@ -205,6 +208,8 @@ if __name__ == "__main__":
         speedup = t_serial / t_par
         efficiency = speedup / n_workers
 
+        workers_list.append(n_workers)
+        speedups.append(speedup)
         
         print(
             f"\n{n_workers:2d} workers: "
@@ -277,11 +282,9 @@ if __name__ == "__main__":
                 f"vs1x={vs1x:.2f}   "
                 f"LIF={LIF:.2f}"
             )
-    workers = [1,2,3,4]
-    speedup = [0.82,1.05,1.10,1.66]
+    plt.plot(workers_list, speedups, marker="o", label="Actual")
+    plt.plot(workers_list, workers_list, "--", label="Ideal")
 
-    plt.plot(workers, speedup, marker="o", label="Actual")
-    plt.plot(workers, workers, "--", label="Ideal")
     plt.xlabel("Workers")
     plt.ylabel("Speedup")
     plt.legend()
