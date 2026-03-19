@@ -128,7 +128,7 @@ if __name__ == "__main__":
 
     times = []
 
-    for _ in range(3):
+    for _ in range(5):
 
         t0 = time.perf_counter()
 
@@ -194,7 +194,7 @@ if __name__ == "__main__":
 
             times = []
 
-            for _ in range(3):
+            for _ in range(5):
 
                 t0 = time.perf_counter()
 
@@ -257,7 +257,7 @@ if __name__ == "__main__":
 
             times = []
 
-            for _ in range(3):
+            for _ in range(5):
 
                 t0 = time.perf_counter()
 

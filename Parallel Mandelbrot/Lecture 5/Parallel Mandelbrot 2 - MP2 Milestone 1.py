@@ -73,7 +73,8 @@ def mandelbrot_parallel(
         ymin, ymax,
         max_iter=100,
         n_workers=4,
-        n_chunks=None):
+        n_chunks=None, 
+        pool=None):
 
     if n_chunks is None:
         n_chunks = n_workers
@@ -95,10 +96,14 @@ def mandelbrot_parallel(
 
         row = row_end
 
+    
+    if pool is not None:
+        return np.vstack(pool.map(_worker, chunks))
+
     with Pool(processes=n_workers) as pool:
 
         tiny = [(0, 8, 8, xmin, xmax, ymin, ymax, max_iter)]
-        pool.map(_worker, tiny)   # warm-up
+        pool.map(_worker, tiny)
 
         parts = pool.map(_worker, chunks)
 
@@ -128,7 +133,7 @@ if __name__ == "__main__":
 
     times = []
 
-    for _ in range(3):
+    for _ in range(5):
 
         t0 = time.perf_counter()
 
@@ -191,12 +196,17 @@ if __name__ == "__main__":
 
             times = []
 
-            for _ in range(3):
+            for _ in range(5):
 
                 t0 = time.perf_counter()
 
-                parts = pool.map(_worker, chunks)
-                np.vstack(parts)
+                mandelbrot_parallel(
+                    N, xmin, xmax, ymin, ymax,
+                    max_iter,
+                    n_workers=n_workers,
+                    n_chunks=n_workers,
+                    pool=pool
+                )
 
                 times.append(time.perf_counter() - t0)
 
@@ -251,12 +261,17 @@ if __name__ == "__main__":
 
             times = []
 
-            for _ in range(3):
+            for _ in range(5):
 
                 t0 = time.perf_counter()
 
-                parts = pool.map(_worker, chunks)
-                np.vstack(parts)
+                mandelbrot_parallel(
+                    N, xmin, xmax, ymin, ymax,
+                    max_iter,
+                    n_workers=n_workers,
+                    n_chunks=n_chunks,
+                    pool=pool
+                )
 
                 times.append(time.perf_counter() - t0)
 
