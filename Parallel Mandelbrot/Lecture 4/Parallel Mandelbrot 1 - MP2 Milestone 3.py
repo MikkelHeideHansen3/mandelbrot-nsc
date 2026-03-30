@@ -107,7 +107,7 @@ if __name__ == "__main__":
     # PROBLEM SETUP
     # =========================
 
-    N = 1024
+    N = 4096
     max_iter = 100
 
     xmin, xmax = -2.0, 1.0

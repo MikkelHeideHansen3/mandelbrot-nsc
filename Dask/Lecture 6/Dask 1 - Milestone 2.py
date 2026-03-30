@@ -109,7 +109,7 @@ if __name__ == "__main__":
     # PROBLEM SETUP
     # =========================
 
-    N = 1024
+    N = 4096
     max_iter = 100
 
     xmin, xmax = -2.0, 1.0
@@ -181,6 +181,7 @@ if __name__ == "__main__":
     print("\nn_chunks | time (s) |   vs1x |  Speedup |    LIF")
     print("------------------------------------------------")
 
+    baseline = None
     for n_chunks in chunk_values:
 
         times = []
@@ -197,7 +198,9 @@ if __name__ == "__main__":
             times.append(time.perf_counter() - t0)
 
         t_dask = statistics.median(times)
-        vs1x = t_dask / t_serial
+        if baseline is None:
+            baseline = t_dask
+        vs1x = t_dask / baseline
         speedup = t_serial / t_dask
         lif = 4 * (t_dask / t_serial) - 1
 
