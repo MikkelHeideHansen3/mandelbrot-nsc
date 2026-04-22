@@ -83,7 +83,7 @@ prog_f64 = cl.Program(ctx, KERNEL_SRC_F64).build()
 # -----------------------------
 # PARAMETERS
 # -----------------------------
-N = 1024
+N = 4096
 MAX_ITER = 200
 
 X_MIN, X_MAX = -2.5, 1.0
@@ -165,4 +165,39 @@ print(f"ratio (f64/f32): {t_f64/t_f32:.2f}")
 plt.imshow(image, cmap="hot", origin="lower")
 plt.axis("off")
 plt.title("Mandelbrot (last run = f64)")
+plt.show()
+
+labels = [
+    "Naive",
+    "NumPy",
+    "Numba",
+    "Multiprocessing",
+    "Dask local",
+    "Dask cluster",
+    "GPU f32",
+    "GPU f64"
+]
+
+times = [
+    6.808,
+    0.812,
+    0.077,
+    0.580,
+    0.565,
+    0.460,
+    0.388,   # GPU f32
+    0.416    # GPU f64
+]
+
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(10,5))
+plt.bar(labels, times)
+
+plt.yscale("log")   # 🔥 MEGET VIGTIGT (krav i M3)
+plt.ylabel("Runtime [s] (log scale)")
+plt.title("Mandelbrot Performance Comparison")
+
+plt.xticks(rotation=45)
+plt.tight_layout()
 plt.show()

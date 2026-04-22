@@ -58,8 +58,6 @@ Y_MIN, Y_MAX = -1.25, 1.25
 image = np.zeros((N, N), dtype=np.int32)
 image_dev = cl.Buffer(ctx, cl.mem_flags.WRITE_ONLY, image.nbytes)
 
-for dev in cl.get_platforms()[0].get_devices():
-    print(dev.name, dev.extensions)
 
 # -----------------------------
 # Warm-up (kernel compile etc.)
