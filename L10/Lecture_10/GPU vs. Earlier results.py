@@ -3,7 +3,8 @@ import matplotlib.pyplot as plt
 labels_1024 = [
     "Naive",
     "NumPy",
-    "Numba",
+    "Numba f32",
+    "Numba f64",
     "GPU f32",
     "GPU f64"
 ]
@@ -11,7 +12,8 @@ labels_1024 = [
 times_1024 = [
     6.808,
     0.812,
-    0.077,
+    0.0802,
+    0.0800,
     0.0386,
     0.0457
 ]
@@ -28,7 +30,8 @@ plt.tight_layout()
 plt.show()
 
 labels_4096 = [
-    "Numba",
+    "Numba f32",
+    "Numba f64",
     "Multiprocessing",
     "Dask local",
     "Dask cluster",
@@ -37,7 +40,8 @@ labels_4096 = [
 ]
 
 times_4096 = [
-    1.258,
+    1.2607,
+    1.2602,
     0.580,
     0.565,
     0.460,
